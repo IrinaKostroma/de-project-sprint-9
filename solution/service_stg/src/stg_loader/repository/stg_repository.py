@@ -1,10 +1,10 @@
 from typing import List
 
 from lib.pg import PgConnect
-from cdm_loader.repository.cdm_models import CdmModel
+from stg_loader.repository.stg_models import StgModel
 
 
-class CdmRepository:
+class StgRepository:
     def __init__(self, db: PgConnect) -> None:
         self._db = db
 
@@ -12,6 +12,7 @@ class CdmRepository:
                       table_name: str,
                       lst_columns: List[str],
                       unique_keys: List[str]) -> str:
+
         columns = ', '.join(lst_columns)
         values = ', '.join([f"%({name})s" for name in lst_columns])
         uniques = ', '.join(unique_keys)
@@ -25,12 +26,14 @@ class CdmRepository:
         """
         return query
 
-    def insert(self, model: CdmModel) -> None:
+    def insert(self, model: StgModel) -> str:
         query = self._query_insert(table_name=model.table_name,
-                                   lst_columns=model.field_names(),
+                                   lst_columns=list(model.field_names()),
                                    unique_keys=model.unique_columns
                                    )
 
         with self._db.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(query, model.dict())
+
+        return query
