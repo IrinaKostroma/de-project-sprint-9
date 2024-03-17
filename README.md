@@ -71,6 +71,6 @@ docker push cr.yandex/crpn9s4lgmuu94mqmc67/<stg/dds/cdm>_service:v2024-03-17-r1
 
 
 Проверка работы в Kubernetes
-kubectl get deployments
-kubectl get pods  
-kubectl logs -f <имя пода>  
+- kubectl get deployments
+- kubectl get pods  
+- kubectl logs -f <имя пода>  
